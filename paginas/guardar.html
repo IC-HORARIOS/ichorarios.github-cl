@@ -1,0 +1,283 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Subir y Descargar Archivos</title>
+  <style>
+    body {
+      font-family: 'Arial', sans-serif;
+      background-color: #222;
+      color: white;
+      margin: 0;
+      padding: 0;
+    }
+
+    header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      background-color: #111;
+      color: white;
+      padding: 20px;
+      box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    }
+
+    header img {
+      width: 40px;
+      height: 40px;
+      margin-right: 10px;
+    }
+
+    header h1 {
+      font-size: 1.5rem;
+      margin: 0;
+    }
+
+    header h2 {
+      font-size: 1rem;
+      color: #fff;
+      margin-top: 0;
+    }
+
+    .container {
+      max-width: 960px;
+      margin: 30px auto;
+      padding: 20px;
+      background-color: #333;
+      border-radius: 8px;
+      box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+    }
+
+    .file-upload {
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      margin-bottom: 20px;
+    }
+
+    .file-upload input[type="file"] {
+      display: none;
+    }
+
+    .upload-btn {
+      background-color: #4CAF50;
+      color: white;
+      padding: 12px 24px;
+      border: none;
+      border-radius: 4px;
+      cursor: pointer;
+      font-size: 1rem;
+      transition: background-color 0.3s, transform 0.3s;
+    }
+
+    .upload-btn:hover {
+      background-color: #45a049;
+      transform: scale(1.05);
+    }
+
+    .files-list {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 16px;
+      justify-content: center;
+      margin-top: 20px;
+    }
+
+    .file-item {
+      width: 150px;
+      height: 150px;
+      background-color: #444;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      border-radius: 8px;
+      cursor: pointer;
+      transition: transform 0.3s ease, box-shadow 0.3s ease;
+      position: relative;
+      overflow: hidden;
+      background-size: cover;
+      background-position: center;
+      flex-direction: column; /* Para que el nombre esté debajo de la imagen */
+      padding: 10px;
+    }
+
+    .file-item:hover {
+      transform: scale(1.05);
+      box-shadow: 0 4px 12px rgba(0, 0, 0, 0.5);
+    }
+
+    .file-item:active {
+      transform: scale(1);
+    }
+
+    .file-item img {
+      width: 80px; /* Imagen más pequeña */
+      height: 80px; /* Imagen más pequeña */
+      object-fit: cover;
+      border-radius: 8px;
+      margin-bottom: 10px;
+    }
+
+    .file-delete {
+      position: absolute;
+      top: 8px;
+      right: 8px;
+      background: rgba(255, 0, 0, 0.8);
+      color: white;
+      padding: 6px 12px;
+      border-radius: 50%;
+      cursor: pointer;
+      font-size: 1rem;
+      display: none;
+      transition: background-color 0.3s;
+    }
+
+    .file-item:hover .file-delete {
+      display: block;
+      background-color: rgba(255, 0, 0, 1);
+    }
+
+    .file-delete:hover {
+      background-color: rgba(255, 0, 0, 1);
+    }
+
+    .upload-btn:hover {
+      background-color: #45a049;
+    }
+
+    .file-name {
+      font-size: 0.9rem;
+      text-align: center;
+      color: #fff;
+      width: 100%;
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+    }
+
+    /* Estilo para el botón de Volver al Inicio */
+    .back-btn {
+      background-color: #f44336;
+      color: white;
+      padding: 16px 32px;
+      border: none;
+      border-radius: 8px;
+      font-size: 1rem;
+      cursor: pointer;
+      text-decoration: none;
+      transition: background-color 0.3s, transform 0.3s;
+    }
+
+    .back-btn:hover {
+      background-color: #e53935;
+      transform: scale(1.05);
+    }
+  </style>
+</head>
+<body>
+
+  <header>
+    <a href="inicio.html" class="back-btn">Volver al Inicio</a>
+    <div style="display: flex; align-items: center;">
+      <img src="/imagenes/logo de programa.jpg" alt="Logo de Empresa" /> <!-- Pon tu logo aquí -->
+      <h1>I-C HORARIOS</h1>
+    </div>
+    <h2>Almacenar Horarios</h2>
+  </header>
+
+  <div class="container">
+    <div class="file-upload">
+      <label for="fileInput" class="upload-btn">Seleccionar Archivos</label>
+      <input type="file" id="fileInput" multiple />
+    </div>
+
+    <div class="files-list" id="filesList"></div>
+  </div>
+
+  <script>
+    const fileInput = document.getElementById('fileInput');
+    const filesList = document.getElementById('filesList');
+    
+    // Función para cargar archivos desde localStorage al inicio
+    function loadFiles() {
+      const files = JSON.parse(localStorage.getItem('files')) || [];
+      files.forEach(file => {
+        displayFile(file);
+      });
+    }
+
+    // Función para guardar los archivos en localStorage
+    function saveFiles(files) {
+      localStorage.setItem('files', JSON.stringify(files));
+    }
+
+    // Función para mostrar un archivo
+    function displayFile(file) {
+      const fileItem = document.createElement('div');
+      fileItem.classList.add('file-item');
+      
+      // Aquí agregamos la imagen (miniatura) del archivo
+      const image = document.createElement('img');
+      image.src = '/imagenes/documento.png'; // Reemplaza con una URL de imagen para los archivos
+      fileItem.appendChild(image);
+
+      const deleteButton = document.createElement('div');
+      deleteButton.classList.add('file-delete');
+      deleteButton.textContent = '❌';
+      deleteButton.onclick = () => deleteFile(file);
+
+      const fileLink = document.createElement('a');
+      fileLink.href = file.url;
+      fileLink.download = file.name; // Esto asegura que el archivo se descargue
+      fileLink.style.width = '100%';
+      fileLink.style.height = '100%';
+      fileLink.style.position = 'absolute';
+      fileLink.style.top = '0';
+      fileLink.style.left = '0';
+
+      const fileName = document.createElement('div');
+      fileName.classList.add('file-name');
+      fileName.textContent = file.name;
+
+      fileItem.appendChild(fileLink);
+      fileItem.appendChild(deleteButton);
+      fileItem.appendChild(fileName); // Nombre debajo de la imagen
+      filesList.appendChild(fileItem);
+    }
+
+    // Función para eliminar un archivo
+    function deleteFile(fileToDelete) {
+      let files = JSON.parse(localStorage.getItem('files')) || [];
+      files = files.filter(file => file.name !== fileToDelete.name);
+      saveFiles(files);
+      filesList.innerHTML = '';
+      loadFiles();
+    }
+
+    // Manejar la carga de archivos
+    fileInput.addEventListener('change', (event) => {
+      const files = event.target.files;
+      let currentFiles = JSON.parse(localStorage.getItem('files')) || [];
+
+      Array.from(files).forEach(file => {
+        const reader = new FileReader();
+        reader.onload = () => {
+          const newFile = {
+            name: file.name,
+            url: reader.result
+          };
+          currentFiles.push(newFile);
+          saveFiles(currentFiles);
+          displayFile(newFile);
+        };
+        reader.readAsDataURL(file);
+      });
+    });
+
+    // Cargar archivos guardados
+    loadFiles();
+  </script>
+
+</body>
+</html>

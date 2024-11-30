@@ -1,0 +1,200 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Team Page</title>
+  <style>
+    body {
+      margin: 0;
+      font-family: Arial, sans-serif;
+      background-color: black;
+      color: white;
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+    }
+
+    .header {
+      border-bottom: 1px solid #2d2d2d;
+      padding: 16px 24px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+
+    .logo-container {
+      display: flex;
+      align-items: center;
+    }
+
+    .logo-container img {
+      height: 48px;
+      width: 48px;
+      margin-right: 16px;
+    }
+
+    .logo-text {
+      color: #a0a0a0;
+      font-size: 14px;
+    }
+
+    .button-back {
+      position: relative;
+      background-color: #121212;
+      color: white;
+      padding: 12px 24px;
+      border: none;
+      cursor: pointer;
+      overflow: hidden;
+      transition: background-color 0.3s ease-in-out;
+    }
+
+    .button-back:hover {
+      background-color: #2d2d2d;
+    }
+
+    .button-back:hover .icon {
+      transform: translateX(-4px);
+    }
+
+    .button-back:hover::after {
+      width: 100%;
+    }
+
+    .button-back .icon {
+      margin-right: 8px;
+      transition: transform 0.3s ease;
+    }
+
+    .button-back span {
+      font-weight: 500;
+    }
+
+    .button-back::after {
+      content: "";
+      position: absolute;
+      bottom: 0;
+      left: 0;
+      height: 2px;
+      width: 0;
+      background-color: white;
+      transition: width 0.3s ease;
+    }
+
+    .team-section {
+      text-align: center;
+      padding: 48px 24px;
+    }
+
+    .team-title {
+      font-size: 2.5rem;
+      margin-bottom: 16px;
+    }
+
+    .team-description {
+      color: #a0a0a0;
+      font-size: 1.2rem;
+      max-width: 600px;
+      margin: 0 auto 48px;
+    }
+
+    .team-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+      gap: 32px;
+      max-width: 1000px;
+      margin: 0 auto;
+    }
+
+    .card {
+      background-color: #121212;
+      border: 1px solid #2d2d2d;
+      padding: 24px;
+      text-align: center;
+      border-radius: 8px;
+      transition: box-shadow 0.3s ease;
+    }
+
+    .card:hover {
+      box-shadow: 0 4px 20px rgba(255, 255, 255, 0.1);
+    }
+
+    .card img {
+      width: 120px;
+      height: 120px;
+      border-radius: 50%;
+      margin-bottom: 16px;
+      object-fit: cover;
+    }
+
+    .card .name {
+      font-size: 1.5rem;
+      margin-bottom: 8px;
+    }
+
+    .card .role {
+      color: #a0a0a0;
+      margin-bottom: 16px;
+    }
+
+    .card .bio {
+      color: #a0a0a0;
+      margin-bottom: 24px;
+    }
+
+    .social-icons a {
+      color: #a0a0a0;
+      margin: 0 8px;
+      transition: color 0.3s ease;
+    }
+
+    .social-icons a:hover {
+      color: white;
+    }
+  </style>
+</head>
+<body>
+  <div class="header">
+    <div class="logo-container">
+      <img src="/imagenes/logo de programa.jpg" alt="Logo">
+      <div class="logo-text">I-C HORARIOS</div>
+    </div>
+    <button class="button-back" onclick="window.location.href='inicio.html'">
+      <span class="icon">←</span>
+      <span>Volver al inicio</span>
+    </button>
+  </div>
+
+  <div class="team-section">
+    <h1 class="team-title">Nuestro Equipo</h1>
+    <p class="team-description">Un dúo apasionado dedicado a crear soluciones excepcionales y experiencias memorables para nuestros clientes.</p>
+
+    <div class="team-grid">
+      <div class="card">
+        <img src="https://via.placeholder.com/300" alt="Ana García">
+        <h3 class="name">Ana García</h3>
+        <p class="role">Directora Creativa</p>
+        <p class="bio">Con más de 8 años de experiencia en diseño y dirección de arte, Ana lidera nuestros proyectos creativos con pasión y visión innovadora.</p>
+        <div class="social-icons">
+          <a href="#" target="_blank">🐱</a>
+          <a href="#" target="_blank">🔗</a>
+          <a href="mailto:ana@ejemplo.com">✉️</a>
+        </div>
+      </div>
+
+      <div class="card">
+        <img src="https://via.placeholder.com/300" alt="Carlos Rodríguez">
+        <h3 class="name">Carlos Rodríguez</h3>
+        <p class="role">Desarrollador Principal</p>
+        <p class="bio">Especialista en desarrollo web full-stack con un enfoque particular en crear experiencias de usuario excepcionales y soluciones escalables.</p>
+        <div class="social-icons">
+          <a href="#" target="_blank">🐱</a>
+          <a href="#" target="_blank">🔗</a>
+          <a href="mailto:carlos@ejemplo.com">✉️</a>
+        </div>
+      </div>
+    </div>
+  </div>
+</body>
+</html>

@@ -1,0 +1,184 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>I-C HORARIOS</title>
+  <style>
+    /* Reset básico */
+    body, html {
+      margin: 0;
+      padding: 0;
+      width: 100%;
+      height: 100%;
+      font-family: Arial, sans-serif;
+      overflow: hidden;
+    }
+
+    /* Contenedor general */
+    .screen {
+      width: 100%;
+      height: 100%;
+      position: absolute;
+      top: 0;
+      left: 0;
+      background-size: cover;
+      background-position: center;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      transition: opacity 0.5s ease;
+      opacity: 0;
+      pointer-events: none;
+    }
+
+    .screen.active {
+      opacity: 1;
+      pointer-events: all;
+    }
+
+    .click-area {
+      position: absolute;
+      width: 100%;
+      height: 100%;
+      cursor: pointer;
+    }
+
+    /* Pantalla principal */
+    .main-menu {
+      display: none;
+      width: 100%;
+      height: 100%;
+      background-image: url('/imagenes/I-C\ HORARIOS.jpg'); /* Fondo de la pantalla principal */
+      background-size: cover;
+      background-position: center;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      padding: 20px;
+    }
+
+    .menu-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 40px;
+    }
+
+    .menu-item {
+      text-align: center;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+    }
+
+    .menu-image {
+      width: 200px; /* Aumentamos el tamaño del icono */
+      height: 200px;
+      border-radius: 10px;
+      overflow: hidden;
+      cursor: pointer;
+      transition: transform 0.2s, background-color 0.3s;
+    }
+
+    .menu-image:hover {
+      transform: scale(1.1);
+    }
+
+    .menu-image img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+    }
+
+    .menu-text {
+      font-size: 22px; /* Tamaño de texto ligeramente más grande */
+      margin: 10px 0;
+      color: whitesmoke;
+    }
+
+    .menu-text.top {
+      order: -1; /* El texto se coloca arriba */
+    }
+
+    .menu-text.bottom {
+      order: 1; /* El texto se coloca abajo */
+    }
+  </style>
+</head>
+<body>
+  <!-- Imágenes interactivas -->
+  <div class="screen active" id="screen1" style="background-image: url('/imagenes/imagen1t.jpg');">
+    <div class="click-area" onclick="goToNextScreen(1)"></div>
+  </div>
+  <div class="screen" id="screen2" style="background-image: url('/imagenes/imagent2.jpg');">
+    <div class="click-area" onclick="goToNextScreen(2)"></div>
+  </div>
+  <div class="screen" id="screen3" style="background-image: url('/imagenes/imagent3.jpg');">
+    <div class="click-area" onclick="goToNextScreen(3)"></div>
+  </div>
+  <div class="screen" id="screen4" style="background-image: url('/imagenes/imagent4.jpg');">
+    <div class="click-area" onclick="goToMainMenu()"></div>
+  </div>
+
+  <!-- Pantalla principal -->
+  <div class="main-menu" id="mainMenu">
+    <div class="menu-grid">
+      <!-- Ícono 1 -->
+      <div class="menu-item">
+        <div class="menu-text top">Tutorial</div>
+        <div class="menu-image" onclick="window.location.href='/paginas/tutorial.html'">
+          <img src="/imagenes/tutorial.png" alt="Ícono 1">
+        </div>
+      </div>
+      <!-- Ícono 2 -->
+      <div class="menu-item">
+        <div class="menu-text top">Crear Nuevo horario</div>
+        <div class="menu-image" onclick="window.location.href='/paginas/index.html'">
+          <img src="/imagenes/horario.png" alt="Ícono 2">
+        </div>
+      </div>
+      <!-- Ícono 3 -->
+      <div class="menu-item">
+        <div class="menu-image" onclick="window.location.href='/paginas/sobre nosotros.html'">
+          <img src="/imagenes/nosotros.png" alt="Ícono 3">
+        </div>
+        <div class="menu-text bottom">Sobre Nosotros</div>
+      </div>
+      <!-- Ícono 4 -->
+      <div class="menu-item">
+        <div class="menu-image" onclick="window.location.href='guardar.html'">
+          <img src="/imagenes/guardar.png" alt="Ícono 4">
+        </div>
+        <div class="menu-text bottom">Guardar</div>
+      </div>
+    </div>
+  </div>
+
+  <script>
+    // Verifica si ya se mostró la pantalla de imágenes interactivas
+    if (localStorage.getItem('shownScreens')) {
+      document.querySelectorAll('.screen').forEach(screen => screen.style.display = 'none');
+      document.getElementById('mainMenu').style.display = 'flex';
+    }
+
+    // Función para avanzar entre imágenes
+    function goToNextScreen(currentScreen) {
+      const current = document.getElementById(`screen${currentScreen}`);
+      const next = document.getElementById(`screen${currentScreen + 1}`);
+      
+      if (current) current.classList.remove('active');
+      if (next) next.classList.add('active');
+    }
+
+    // Función para mostrar el menú principal
+    function goToMainMenu() {
+      const current = document.getElementById('screen4');
+      const mainMenu = document.getElementById('mainMenu');
+
+      if (current) current.classList.remove('active');
+      mainMenu.style.display = 'flex';
+      localStorage.setItem('shownScreens', 'true'); // Marca que se han mostrado las imágenes
+    }
+  </script>
+</body>
+</html>
