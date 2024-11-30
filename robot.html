@@ -1,0 +1,123 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>I-C HORARIOS</title>
+  <style>
+    body {
+      margin: 0;
+      height: 100vh;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      background: url('/imagenes/fondo2.avif') no-repeat center center fixed;
+      background-size: cover;
+      overflow: hidden;
+    }
+    .image-container {
+      cursor: pointer;
+      position: absolute;
+      z-index: 2; /* Imagen encima de todo */
+    }
+    video {
+      display: none;
+      width: 80%;
+      height: auto;
+      z-index: 1; /* Video debajo */
+    }
+    .skip-button {
+      position: absolute;
+      top: 20px;
+      right: 20px;
+      z-index: 3;
+      padding: 10px 20px;
+      background-color: rgba(0, 0, 0, 0.7);
+      color: white;
+      border: none;
+      border-radius: 5px;
+      font-size: 16px;
+      cursor: pointer;
+      display: none;
+    }
+    .skip-button:hover {
+      background-color: rgba(255, 0, 0, 0.7);
+    }
+  </style>
+</head>
+<body>
+  <!-- Imagen interactiva -->
+  <div class="image-container" onclick="startSound()">
+    <img src="/imagenes/gif engranaje.gif" alt="Haz clic para iniciar" id="start-image">
+  </div>
+
+  <!-- Elemento de audio -->
+  <audio id="sound">
+    <source src="/videos/inicio.mp3" type="audio/mpeg">
+    Tu navegador no soporta el elemento <code>audio</code>.
+  </audio>
+
+  <!-- Primer video -->
+  <video id="video-1" onended="startSecondVideo()">
+    <source src="/videos/fondo.mp4" type="video/mp4">
+    Tu navegador no soporta el elemento <code>video</code>.
+  </video>
+
+  <!-- Segundo video -->
+  <video id="video-2" onended="redirect()">
+    <source src="/videos/ic.mp4" type="video/mp4">
+    Tu navegador no soporta el elemento <code>video</code>.
+  </video>
+
+  <!-- Botón de saltar -->
+  <button class="skip-button" id="skip-button" onclick="skipVideo()">Saltar Video</button>
+
+  <script>
+    let currentVideo = null;
+
+    function startSound() {
+      const sound = document.getElementById('sound');
+      const image = document.getElementById('start-image');
+      const video1 = document.getElementById('video-1');
+      const skipButton = document.getElementById('skip-button');
+      
+      sound.play(); // Reproduce el sonido
+
+      // Cuando termine el sonido, inicia el primer video
+      sound.onended = () => {
+        image.style.display = 'none'; // Oculta la imagen
+        video1.style.display = 'block'; // Muestra el primer video
+        skipButton.style.display = 'block'; // Muestra el botón de saltar
+        video1.play(); // Reproduce el primer video
+        currentVideo = video1;
+      };
+    }
+
+    function startSecondVideo() {
+      const video1 = document.getElementById('video-1');
+      const video2 = document.getElementById('video-2');
+
+      video1.style.display = 'none'; // Oculta el primer video
+      video2.style.display = 'block'; // Muestra el segundo video
+      video2.play(); // Reproduce el segundo video
+      currentVideo = video2;
+    }
+
+    function skipVideo() {
+      if (currentVideo) {
+        currentVideo.pause(); // Detiene el video actual
+        if (currentVideo.id === 'video-1') {
+          startSecondVideo(); // Salta al segundo video
+        } else if (currentVideo.id === 'video-2') {
+          redirect(); // Salta a la redirección final
+        }
+      }
+    }
+
+    function redirect() {
+      // Redirige a otra página al terminar el segundo video
+      window.location.href = 'inicio.html';
+    }
+  </script>
+</body>
+</html>
